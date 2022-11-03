@@ -11,6 +11,9 @@ const Header = () => {
         <li className='mx-5'>
             <NavLink className={'btn btn-ghost'} to={'/login'}>Log In</NavLink>
         </li>
+        <li className='mx-5'>
+            <NavLink className={'btn btn-ghost'} to={'/orders'}>Order Review</NavLink>
+        </li>
     </div>
     return (
         <div className="navbar bg-base-100 px-[150px] py-[50px]">

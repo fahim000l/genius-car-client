@@ -1,0 +1,5 @@
+.background-design::after {
+    position: absolute;
+    background: linear-gradient(to right, #151515 0%, rgba(21, 21, 21, 0) 100%);
+
+}
