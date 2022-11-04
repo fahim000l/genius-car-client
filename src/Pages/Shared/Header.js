@@ -1,19 +1,40 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import logo from '../../assets/logo.svg';
+import { AuthContext } from '../../Contexts/AuthProvider';
 
 const Header = () => {
+
+    const { user, LogOut } = useContext(AuthContext);
+
+
+    const handleLogOut = () => {
+        LogOut()
+            .then(() => { })
+            .catch(err => console.error(err));
+    }
 
     const menu = <div className='lg:flex'>
         <li className='mx-5'>
             <NavLink className={'btn btn-ghost'} to={'/'}>Home</NavLink>
         </li>
-        <li className='mx-5'>
-            <NavLink className={'btn btn-ghost'} to={'/login'}>Log In</NavLink>
-        </li>
-        <li className='mx-5'>
-            <NavLink className={'btn btn-ghost'} to={'/orders'}>Order Review</NavLink>
-        </li>
+        {
+            user?.email ?
+                <>
+                    <li className='mx-5'>
+                        <NavLink className={'btn btn-ghost'} to={'/orders'}>Order Review</NavLink>
+                    </li>
+                    <li className='mx-5'>
+                        <button onClick={handleLogOut} className={'btn btn-dark text-white'}>Log Out</button>
+                    </li>
+                </>
+                :
+                <>
+                    <li className='mx-5'>
+                        <NavLink className={'btn btn-ghost'} to={'/login'}>Log In</NavLink>
+                    </li>
+                </>
+        }
     </div>
     return (
         <div className="navbar bg-base-100 px-[150px] py-[50px]">

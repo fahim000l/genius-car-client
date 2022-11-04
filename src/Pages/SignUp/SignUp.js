@@ -89,7 +89,7 @@ const SignUp = () => {
                             <label className="label">
                                 <span className="label-text">Password</span>
                             </label>
-                            <input name='password' type="text" placeholder="password" required className="input input-bordered" />
+                            <input name='password' type="password" placeholder="password" required className="input input-bordered" />
                         </div>
                         <p className='text-red-600 font-bold'>{error}</p>
                         <div className="form-control mt-6">

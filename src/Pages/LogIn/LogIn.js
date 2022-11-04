@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import img from '../../assets/images/login/login.svg';
 import { AuthContext } from '../../Contexts/AuthProvider';
 
@@ -7,6 +7,10 @@ const LogIn = () => {
 
     const { logIn } = useContext(AuthContext);
     const [error, setError] = useState('');
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    const from = location.state?.from?.pathname || '/';
 
 
     const handleSubmit = (event) => {
@@ -21,7 +25,25 @@ const LogIn = () => {
             .then(result => {
                 const user = result.user;
                 console.log(user);
-                form.reset();
+
+                const currentUser = {
+                    email: user.email
+                }
+                fetch('http://localhost:5000/jwt', {
+                    method: 'POST',
+                    headers: {
+                        'content-type': 'application/json',
+                    },
+                    body: JSON.stringify(currentUser)
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log(data.token);
+                        localStorage.setItem('genius-token', data.token);
+                        form.reset();
+                        navigate(from, { replace: true });
+                    })
+
             })
             .catch(err => {
                 console.error(err);
@@ -43,13 +65,13 @@ const LogIn = () => {
                             <label className="label">
                                 <span className="label-text">Email</span>
                             </label>
-                            <input name='email' type="text" placeholder="email" className="input input-bordered" />
+                            <input name='email' type="text" placeholder="email" className="input input-bordered" required />
                         </div>
                         <div className="form-control">
                             <label className="label">
                                 <span className="label-text">Password</span>
                             </label>
-                            <input name='password' type="password" placeholder="password" className="input input-bordered" />
+                            <input name='password' type="password" placeholder="password" className="input input-bordered" required />
                             <label className="label">
                                 <NavLink href="#" className="label-text-alt link link-hover">Forgot password?</NavLink>
                             </label>
