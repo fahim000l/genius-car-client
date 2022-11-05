@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { FaFacebook, FaGoogle, FaLinkedin } from 'react-icons/fa';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import img from '../../assets/images/login/login.svg';
 import { AuthContext } from '../../Contexts/AuthProvider';
 
@@ -12,6 +12,10 @@ const SignUp = () => {
         fbSignIn
     } = useContext(AuthContext);
     const [error, setError] = useState('');
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    const from = location.state?.from?.pathname || '/';
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -32,7 +36,25 @@ const SignUp = () => {
             .then(result => {
                 const user = result.user;
                 console.log(user);
-                form.reset();
+
+                const currentUser = {
+                    email: user.email
+                }
+
+                fetch('https://genius-car-server-lac.vercel.app/jwt', {
+                    method: 'POST',
+                    headers: {
+                        'content-type': 'application/json',
+                    },
+                    body: JSON.stringify(currentUser)
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log(data.token);
+                        localStorage.setItem('genius-token', data.token);
+                        form.reset();
+                        navigate(from, { replace: true });
+                    })
             })
             .catch(err => {
                 console.error(err);
@@ -46,6 +68,24 @@ const SignUp = () => {
             .then(result => {
                 const user = result.user;
                 console.log(user);
+
+                const currentUser = {
+                    email: user.email
+                };
+
+                fetch('https://genius-car-server-lac.vercel.app/jwt', {
+                    method: 'POST',
+                    headers: {
+                        'content-type': 'application/json',
+                    },
+                    body: JSON.stringify(currentUser)
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log(data.token);
+                        localStorage.setItem('genius-token', data.token);
+                        navigate(from, { replace: true });
+                    })
             })
             .catch(err => {
                 console.error(err);
@@ -57,6 +97,24 @@ const SignUp = () => {
             .then(result => {
                 const user = result.user;
                 console.log(user);
+
+                const currentUser = {
+                    email: user.email
+                };
+
+                fetch('https://genius-car-server-lac.vercel.app/jwt', {
+                    method: 'POST',
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                    body: JSON.stringify(currentUser)
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log(data.token);
+                        localStorage.setItem('genius-token', data.token);
+                        navigate(from, { replace: true });
+                    })
             })
             .catch(err => {
                 console.error(err);
